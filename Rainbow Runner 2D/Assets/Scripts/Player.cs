@@ -14,8 +14,14 @@ public class Player : MonoBehaviour
     public bool isHoldingJump = false; 
     public float maxHoldJumpTime = 0.4f;
     public float holdJumpTimer = 0.0f;
-
+    
     public float jumpGrace = 1;
+
+    [Header("Movement")]
+    public float maxAcceleration = 10;
+    public float acceleration = 10;
+    public float maxXVelocity = 100;
+    public float distance = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -74,14 +80,29 @@ public class Player : MonoBehaviour
             if (!isHoldingJump)
             {
                 velocity.y += gravity * Time.fixedDeltaTime;
+            }    
 
-            }
             // Checks if the player has collided with the ground
+            // TODO: Might change to detect if player has collided with a tag - in this case, platforms will have a tag instead of groundHeight
             if (pos.y <= groundHeight)
             {
                 pos.y = groundHeight;
                 isGrounded = true;
             }
+        }
+
+        distance += velocity.x * Time.fixedDeltaTime;
+
+        if (isGrounded)
+        {
+            float velocityRatio = velocity.x / maxXVelocity;
+            acceleration = maxAcceleration * (1 - velocityRatio);
+
+            velocity.x += acceleration * Time.fixedDeltaTime;
+            if (velocity.x >= maxXVelocity)
+            {
+                velocity.x = maxXVelocity;
+            }           
         }
 
         // Update the position of the player
