@@ -38,7 +38,7 @@ public class Player2 : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
-        {
+        {         
             pressedJump = true;
         }
 
@@ -56,11 +56,10 @@ public class Player2 : MonoBehaviour
             }
         }
 
-
-        /*if (IsGrounded() && Input.GetKeyDown(KeyCode.Space))
+        if (IsGrounded() && Input.GetKeyDown(KeyCode.Space))
         {                
             rb.velocity = Vector2.up * jumpVelocity;                     
-        }*/
+        }
 
         HandleMovement();
     }

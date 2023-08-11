@@ -797,7 +797,7 @@ MonoBehaviour:
   platformsLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  jumpVelocity: 25
+  jumpVelocity: 20
   moveSpeed: 15
   gravityScale: 12
   jumpTimer: 0.5
@@ -816,8 +816,8 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_GravityScale: 12
+  m_Material: {fileID: 6200000, guid: dba6b663e76b747419685f3d488307da, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
