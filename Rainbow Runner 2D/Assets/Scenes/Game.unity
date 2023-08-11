@@ -306,7 +306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: -400
   velocity: {x: 0, y: 0}
-  jumpVelocity: 50
+  jumpVelocity: 45
   groundHeight: 10
   isGrounded: 0
   isHoldingJump: 0

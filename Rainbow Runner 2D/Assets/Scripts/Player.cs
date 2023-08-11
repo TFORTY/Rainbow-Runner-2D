@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [Header("Jump Variables")]
     public float gravity;
     public Vector2 velocity;
     public float jumpVelocity = 20;
