@@ -17,11 +17,11 @@ public class Player : MonoBehaviour
     
     public float jumpGrace = 1;
 
-    [Header("Movement")]
+    /*[Header("Movement")]
     public float maxAcceleration = 10;
     public float acceleration = 10;
     public float maxXVelocity = 100;
-    public float distance = 0;
+    public float distance = 0;*/
 
     // Start is called before the first frame update
     void Start()
@@ -91,9 +91,9 @@ public class Player : MonoBehaviour
             }
         }
 
-        distance += velocity.x * Time.fixedDeltaTime;
+        //distance += velocity.x * Time.fixedDeltaTime;
 
-        if (isGrounded)
+        /*if (isGrounded)
         {
             float velocityRatio = velocity.x / maxXVelocity;
             acceleration = maxAcceleration * (1 - velocityRatio);
@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
             {
                 velocity.x = maxXVelocity;
             }           
-        }
+        }*/
 
         // Update the position of the player
         transform.position = pos;

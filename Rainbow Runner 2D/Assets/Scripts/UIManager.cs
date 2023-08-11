@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int score = Mathf.FloorToInt(player.distance);
-        scoreText.text = score.ToString();
+        //int score = Mathf.FloorToInt(player.distance);
+        //scoreText.text = score.ToString();
     }
 }

@@ -12,10 +12,10 @@ public class Player2 : MonoBehaviour
 
     [SerializeField] float moveSpeed = 40f;
 
-    [SerializeField] float gravity;
     [SerializeField] bool isHoldingJump = false;
     [SerializeField] float maxHoldJumpTime = 0.4f;
     [SerializeField] float holdJumpTimer = 0.0f;
+    [SerializeField] float jumpGrace = 1;
 
     private void Awake()
     {
@@ -32,12 +32,48 @@ public class Player2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (IsGrounded() && Input.GetKeyDown(KeyCode.Space))
+        if (IsGrounded() /*&& Input.GetKeyDown(KeyCode.Space)*/)
+        {       
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                rb.velocity = Vector2.up * jumpVelocity;
+                isHoldingJump = true;
+                holdJumpTimer = 0;
+            }
+             
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
         {
-            rb.velocity = Vector2.up * jumpVelocity;
+            isHoldingJump = false;
         }
 
         HandleMovement();
+    }
+
+    private void FixedUpdate()
+    {
+        Vector2 pos = transform.position;      
+
+        if (!IsGrounded())
+        {
+            if (isHoldingJump)
+            {
+                holdJumpTimer += Time.fixedDeltaTime;
+                if (holdJumpTimer >= maxHoldJumpTime)
+                {
+                    isHoldingJump = false;
+                }
+            }
+
+            pos.y += rb.velocity.y * Time.fixedDeltaTime;
+
+            if (!isHoldingJump)
+            {
+                Vector2 velocity = rb.velocity;
+                velocity.y += rb.gravityScale * Time.fixedDeltaTime;
+            }
+        }
     }
 
     private bool IsGrounded()
@@ -48,6 +84,7 @@ public class Player2 : MonoBehaviour
         return raycastHit2D.collider != null;
     }
 
+    #region Basic Movement
     private void HandleMovement()
     {
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -63,4 +100,5 @@ public class Player2 : MonoBehaviour
             rb.velocity = new Vector2(0, rb.velocity.y);
         }
     }
+    #endregion
 }
