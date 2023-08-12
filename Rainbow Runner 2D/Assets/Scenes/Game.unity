@@ -494,7 +494,6 @@ MonoBehaviour:
   - {fileID: 1663556814}
   - {fileID: 1175056891}
   choke: 0.25
-  scrollSpeed: 10
 --- !u!1 &334592431
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,7 +8,6 @@ public class BackgroundLoop : MonoBehaviour
     private Camera mainCamera;
     private Vector2 screenBounds;
     public float choke;
-    public float scrollSpeed;
 
     private Vector3 lastScreenPos;
 
@@ -29,20 +28,17 @@ public class BackgroundLoop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 velocity = Vector3.zero;
-        Vector3 desiredPosition = transform.position + new Vector3(scrollSpeed, 0, 0);
-        Vector3 smoothPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, 0.3f);
-        transform.position = smoothPosition;
+       
     }
 
     void LoadChildObjects(GameObject obj)
     {
         float objectWidth = obj.GetComponent<SpriteRenderer>().bounds.size.x - choke;
         int childsNeeded = (int)Mathf.Ceil(screenBounds.x * 2 / objectWidth);
-        GameObject clone = Instantiate(obj) as GameObject;
-        for (int i = 0; i <= childsNeeded; i++)
+        GameObject clone = Instantiate(obj);
+        for (int i = 0; i <= childsNeeded; ++i)
         {
-            GameObject c = Instantiate(clone) as GameObject;
+            GameObject c = Instantiate(clone);
             c.transform.SetParent(obj.transform);
             c.transform.position = new Vector3(objectWidth * i, obj.transform.position.y, obj.transform.position.z);
             c.name = obj.name + i;
