@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player2 : MonoBehaviour
 {
+    // ADJUST HEIGHT OF MAX JUMP
+
     [SerializeField] LayerMask platformsLayerMask;
 
     private Rigidbody2D rb;
@@ -16,16 +18,20 @@ public class Player2 : MonoBehaviour
     private bool releasedJump = false;
     [SerializeField] float gravityScale = 1;
 
-    [SerializeField] float jumpTimer = 0.5f;
+    [SerializeField] float maxJumpTime = 0.5f;
     private bool startTimer = false;
-    private float timer;
+    private float maxJumpTimer;
+
+    private bool jumpPressed;
+    private float jumpTimer;
+    private float jumpGracePeriod = 0.2f;
 
     private void Awake()
     {
         rb = transform.GetComponent<Rigidbody2D>();
         boxCollider2D = transform.GetComponent<BoxCollider2D>();
 
-        timer = jumpTimer;
+        maxJumpTimer = maxJumpTime;
     }
 
     // Start is called before the first frame update
@@ -37,9 +43,18 @@ public class Player2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        jumpPressed = Input.GetKeyDown(KeyCode.Space);
+
+        if (jumpPressed)
+        {
+            jumpTimer = Time.time;
+            Debug.Log("Jump Pressed");
+        }
+
+        if (/*Input.GetKeyDown(KeyCode.Space) &&*/ IsGrounded() && (jumpPressed || (jumpTimer > 0 && Time.time < jumpTimer + jumpGracePeriod)))
         {         
             pressedJump = true;
+            jumpTimer = -1;
         }
 
         if (Input.GetKeyUp(KeyCode.Space))
@@ -49,16 +64,11 @@ public class Player2 : MonoBehaviour
 
         if (startTimer)
         {
-            timer -= Time.deltaTime;   
-            if (timer <= 0)
+            maxJumpTimer -= Time.deltaTime;   
+            if (maxJumpTimer <= 0)
             {
                 releasedJump = true;
             }
-        }
-
-        if (IsGrounded() && Input.GetKeyDown(KeyCode.Space))
-        {                
-            rb.velocity = Vector2.up * jumpVelocity;                     
         }
 
         HandleMovement();
@@ -89,14 +99,13 @@ public class Player2 : MonoBehaviour
     {
         rb.gravityScale = gravityScale;
         releasedJump = false;
-        timer = jumpTimer;
+        maxJumpTimer = maxJumpTime;
         startTimer = false;
     }
 
     private bool IsGrounded()
     {
         RaycastHit2D raycastHit2D = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0f, Vector2.down, .1f, platformsLayerMask);
-        //Debug.Log(raycastHit2D.collider);
         Debug.DrawRay(boxCollider2D.bounds.center, (boxCollider2D.bounds.size * Vector2.down), Color.red);
 
         return raycastHit2D.collider != null;
