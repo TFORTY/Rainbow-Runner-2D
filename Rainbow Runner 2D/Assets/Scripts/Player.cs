@@ -4,24 +4,34 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("Jump Variables")]
-    public float gravity;
-    public Vector2 velocity;
-    public float jumpVelocity = 20;
-    public float groundHeight = 10;
-    public bool isGrounded = false;
-   
-    public bool isHoldingJump = false; 
-    public float maxHoldJumpTime = 0.4f;
-    public float holdJumpTimer = 0.0f;
-    
-    public float jumpGrace = 1;
+    // ADJUST HEIGHT OF MAX JUMP
 
-    /*[Header("Movement")]
-    public float maxAcceleration = 10;
-    public float acceleration = 10;
-    public float maxXVelocity = 100;
-    public float distance = 0;*/
+    [SerializeField] LayerMask platformsLayerMask;
+
+    private Rigidbody2D rb;
+    [SerializeField] float jumpVelocity = 10f;
+    private BoxCollider2D boxCollider2D;
+
+    [SerializeField] float moveSpeed = 40f;
+
+    [Header("Jumping")]
+    private bool pressedJump = false;
+    private bool releasedJump = false;
+    [SerializeField] float gravityScale = 1;
+    [SerializeField] float maxJumpTime = 0.5f;
+    private bool startTimer = false;
+    private float maxJumpTimer;
+    private bool jumpPressed;
+    private float jumpTimer;
+    private float jumpGracePeriod = 0.2f;
+
+    private void Awake()
+    {
+        rb = transform.GetComponent<Rigidbody2D>();
+        boxCollider2D = transform.GetComponent<BoxCollider2D>();
+
+        maxJumpTimer = maxJumpTime;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -32,80 +42,89 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector2 pos = transform.position;
-        float groundDistance = Mathf.Abs(pos.y - groundHeight);
+        jumpPressed = Input.GetKeyDown(KeyCode.Space);
 
-        // Check if the player is on the ground
-        // Also check if the player is close to the ground to input another jump 
-        if (isGrounded || groundDistance <= jumpGrace)
+        if (jumpPressed)
         {
-            // If the player is on the ground, they can jump
-            if (Input.GetKeyDown(KeyCode.Space))
+            jumpTimer = Time.time;
+            Debug.Log("Jump Pressed");
+        }
+
+        if (/*Input.GetKeyDown(KeyCode.Space) &&*/ IsGrounded() && (jumpPressed || (jumpTimer > 0 && Time.time < jumpTimer + jumpGracePeriod)))
+        {         
+            pressedJump = true;
+            jumpTimer = -1;
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            releasedJump = true;
+        }
+
+        if (startTimer)
+        {
+            maxJumpTimer -= Time.deltaTime;   
+            if (maxJumpTimer <= 0)
             {
-                isGrounded = false;
-                velocity.y = jumpVelocity;
-                isHoldingJump = true;
-                holdJumpTimer = 0;
+                releasedJump = true;
             }
         }
 
-        // Checks if the player is not holding jump, so apply gravity
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            isHoldingJump = false;
-        }
+        //HandleMovement();
     }
 
     private void FixedUpdate()
     {
-        Vector2 pos = transform.position;
-
-        // If the player is not on the ground, they have jumped, apply upwards velocity
-        if (!isGrounded)
+        if (pressedJump)
         {
-            // Player is holding jump, create a higher jump for a short period of time
-            // If the timer exceeds the duration, bring them back down
-            if (isHoldingJump)
-            {
-                holdJumpTimer += Time.fixedDeltaTime;
-                if (holdJumpTimer >= maxHoldJumpTime)
-                {
-                    isHoldingJump = false;
-                }
-            }
-
-            pos.y += velocity.y * Time.fixedDeltaTime;
-
-            // Normal mini jump
-            if (!isHoldingJump)
-            {
-                velocity.y += gravity * Time.fixedDeltaTime;
-            }    
-
-            // Checks if the player has collided with the ground
-            // TODO: Might change to detect if player has collided with a tag - in this case, platforms will have a tag instead of groundHeight
-            if (pos.y <= groundHeight)
-            {
-                pos.y = groundHeight;
-                isGrounded = true;
-            }
+            StartJump();
         }
 
-        //distance += velocity.x * Time.fixedDeltaTime;
-
-        /*if (isGrounded)
+        if (releasedJump)
         {
-            float velocityRatio = velocity.x / maxXVelocity;
-            acceleration = maxAcceleration * (1 - velocityRatio);
-
-            velocity.x += acceleration * Time.fixedDeltaTime;
-            if (velocity.x >= maxXVelocity)
-            {
-                velocity.x = maxXVelocity;
-            }           
-        }*/
-
-        // Update the position of the player
-        transform.position = pos;
+            StopJump();
+        }
     }
+
+    private void StartJump()
+    {
+        rb.gravityScale = 0;
+        rb.velocity = Vector2.up * jumpVelocity;
+        pressedJump = false;
+        startTimer = true;
+    }
+
+    private void StopJump()
+    {
+        rb.gravityScale = gravityScale;
+        releasedJump = false;
+        maxJumpTimer = maxJumpTime;
+        startTimer = false;
+    }
+
+    private bool IsGrounded()
+    {
+        RaycastHit2D raycastHit2D = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0f, Vector2.down, .1f, platformsLayerMask);
+        Debug.DrawRay(boxCollider2D.bounds.center, (boxCollider2D.bounds.size * Vector2.down), Color.red);
+
+        return raycastHit2D.collider != null;
+    }
+
+    #region Basic Movement
+    private void HandleMovement()
+    {
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {                     
+            rb.velocity = new Vector2(moveSpeed, rb.velocity.y);           
+        }
+        else
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        }
+    }
+    #endregion
 }
