@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public static Player Instance { get; private set; }
+
     // ADJUST HEIGHT OF MAX JUMP
 
     [SerializeField] LayerMask platformsLayerMask;
@@ -11,8 +13,6 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField] float jumpVelocity = 10f;
     private BoxCollider2D boxCollider2D;
-
-    [SerializeField] float moveSpeed = 40f;
 
     [Header("Jumping")]
     private bool pressedJump = false;
@@ -25,8 +25,21 @@ public class Player : MonoBehaviour
     private float jumpTimer;
     private float jumpGracePeriod = 0.2f;
 
+    private float distance;
+
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(gameObject);
+            return;
+        }
+
         rb = transform.GetComponent<Rigidbody2D>();
         boxCollider2D = transform.GetComponent<BoxCollider2D>();
 
@@ -42,6 +55,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Move the player in the x direction
+        transform.position += new Vector3(GameManager.Instance.GetCameraSpeed() * Time.deltaTime, 0, 0) * GameManager.Instance.GetSpeedModifier();
+
         jumpPressed = Input.GetKeyDown(KeyCode.Space);
 
         if (jumpPressed)
@@ -50,7 +66,7 @@ public class Player : MonoBehaviour
             Debug.Log("Jump Pressed");
         }
 
-        if (/*Input.GetKeyDown(KeyCode.Space) &&*/ IsGrounded() && (jumpPressed || (jumpTimer > 0 && Time.time < jumpTimer + jumpGracePeriod)))
+        if (IsGrounded() && (jumpPressed || (jumpTimer > 0 && Time.time < jumpTimer + jumpGracePeriod)))
         {         
             pressedJump = true;
             jumpTimer = -1;
@@ -69,8 +85,6 @@ public class Player : MonoBehaviour
                 releasedJump = true;
             }
         }
-
-        //HandleMovement();
     }
 
     private void FixedUpdate()
@@ -84,6 +98,8 @@ public class Player : MonoBehaviour
         {
             StopJump();
         }
+
+        distance += transform.position.x * Time.fixedDeltaTime /** GameManager.Instance.GetSpeedModifier()*/;
     }
 
     private void StartJump()
@@ -110,21 +126,8 @@ public class Player : MonoBehaviour
         return raycastHit2D.collider != null;
     }
 
-    #region Basic Movement
-    private void HandleMovement()
+    public float GetDistance()
     {
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {                     
-            rb.velocity = new Vector2(moveSpeed, rb.velocity.y);           
-        }
-        else
-        {
-            rb.velocity = new Vector2(0, rb.velocity.y);
-        }
+        return distance;
     }
-    #endregion
 }

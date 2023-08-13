@@ -16,8 +16,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [SerializeField] float cameraSpeed;
-    [SerializeField] Transform playerTransform;
     [SerializeField] Transform cameraTransform;
+    [SerializeField] float speedModifier = 1;
 
     private void Awake()
     {
@@ -39,14 +39,34 @@ public class GameManager : MonoBehaviour
         
     }
 
+    // TODO
+    // GAME OVER LOGIC
+    // --> Trigger on bottom or when they collide with obstacle
+
     // Update is called once per frame
     void Update()
     {
-        playerTransform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0);
+             
     }
 
     private void LateUpdate()
     {
-        cameraTransform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0);
+        // Move the camera in the x direction
+        cameraTransform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0) * speedModifier;
+    }  
+
+    public float GetCameraSpeed()
+    {
+        return cameraSpeed;
+    }
+
+    public float GetSpeedModifier()
+    {
+        return speedModifier;
+    }
+
+    public void SetSpeedModifier(float newValue)
+    {
+        speedModifier = newValue;
     }
 }
