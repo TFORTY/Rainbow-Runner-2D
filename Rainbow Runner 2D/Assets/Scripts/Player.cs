@@ -29,16 +29,13 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (Instance != null)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            DontDestroyOnLoad(gameObject);
+            Destroy(gameObject);
             return;
         }
+
+        Instance = this;
 
         rb = transform.GetComponent<Rigidbody2D>();
         boxCollider2D = transform.GetComponent<BoxCollider2D>();
@@ -99,7 +96,7 @@ public class Player : MonoBehaviour
             StopJump();
         }
 
-        distance += transform.position.x * Time.fixedDeltaTime /** GameManager.Instance.GetSpeedModifier()*/;
+        distance += transform.position.x * Time.fixedDeltaTime;
     }
 
     private void StartJump()

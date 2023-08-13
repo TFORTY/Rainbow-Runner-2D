@@ -6,9 +6,9 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
+    private float score;
     [SerializeField] TMP_Text scoreText;
     [SerializeField] TMP_Text finalScoreText;
-    [SerializeField] GameObject gameOverPanel;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +21,14 @@ public class UIManager : MonoBehaviour
     {
         // SCORE
         // Check is player is not dead, if not, add score
-        scoreText.text = Player.Instance.GetDistance().ToString("0");
+        if (!GameManager.Instance.GetIsGameOver())
+        {
+            score = Player.Instance.GetDistance();
+            scoreText.text = score.ToString("0");
+        }     
+        else if (GameManager.Instance.GetIsGameOver())
+        {
+            finalScoreText.text = score.ToString("0");
+        }
     }
 }

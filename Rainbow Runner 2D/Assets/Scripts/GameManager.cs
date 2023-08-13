@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,25 +19,26 @@ public class GameManager : MonoBehaviour
     [SerializeField] float cameraSpeed;
     [SerializeField] Transform cameraTransform;
     [SerializeField] float speedModifier = 1;
+    [SerializeField] float deathYPos = -18;
+
+    [SerializeField] GameObject gameOverPanel;
+    private bool isGameOver = false;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
+
+        Instance = this;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        isGameOver = false;
     }
 
     // TODO
@@ -47,11 +49,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Player.Instance.transform.position.y <= -18)
-        {
-            Debug.Log("GAME OVER");
-
-        }
+        GameOver();
     }
 
     private void LateUpdate()
@@ -73,5 +71,29 @@ public class GameManager : MonoBehaviour
     public void SetSpeedModifier(float newValue)
     {
         speedModifier = newValue;
+    }
+
+    public void Restart()
+    {
+        // Reload Scene
+        // Make sue camera speed is back at 15
+        // GameOver panel is false
+        // scores are 0
+        SceneManager.LoadScene(0);
+    }
+
+    public void GameOver()
+    {
+        if (Player.Instance.transform.position.y <= deathYPos)
+        {
+            gameOverPanel.SetActive(true);
+            cameraSpeed = 0;
+            isGameOver = true;
+        }
+    }
+
+    public bool GetIsGameOver()
+    {
+        return isGameOver;
     }
 }
