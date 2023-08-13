@@ -7,6 +7,8 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] TMP_Text scoreText;
+    [SerializeField] TMP_Text finalScoreText;
+    [SerializeField] GameObject gameOverPanel;
 
     // Start is called before the first frame update
     void Start()

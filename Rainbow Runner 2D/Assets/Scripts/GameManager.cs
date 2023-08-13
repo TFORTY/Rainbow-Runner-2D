@@ -42,11 +42,16 @@ public class GameManager : MonoBehaviour
     // TODO
     // GAME OVER LOGIC - Check by if player.y <= some y value
     // --> Triggered if player falls or collides with obstacle
+    // --> Can destory the player, and if player == null, show the game over panel
 
     // Update is called once per frame
     void Update()
     {
-             
+        if (Player.Instance.transform.position.y <= -18)
+        {
+            Debug.Log("GAME OVER");
+
+        }
     }
 
     private void LateUpdate()
