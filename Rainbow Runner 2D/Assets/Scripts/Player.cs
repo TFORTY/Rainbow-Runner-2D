@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
 
     private float distance;
 
+    private SpriteRenderer spriteRenderer;
+
     private void Awake()
     {
         if (Instance != null)
@@ -41,6 +43,8 @@ public class Player : MonoBehaviour
         boxCollider2D = transform.GetComponent<BoxCollider2D>();
 
         maxJumpTimer = maxJumpTime;
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Start is called before the first frame update
@@ -52,15 +56,17 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Move the player in the x direction
-        transform.position += new Vector3(GameManager.Instance.GetCameraSpeed() * Time.deltaTime, 0, 0) * GameManager.Instance.GetSpeedModifier();
+        if (GameManager.Instance.GetStartGame())
+        {
+            // Move the player in the x direction
+            transform.position += new Vector3(GameManager.Instance.GetCameraSpeed() * Time.deltaTime, 0, 0) * GameManager.Instance.GetSpeedModifier();
+        }
 
         jumpPressed = Input.GetKeyDown(KeyCode.Space);
 
         if (jumpPressed)
         {
             jumpTimer = Time.time;
-            Debug.Log("Jump Pressed");
         }
 
         if (IsGrounded() && (jumpPressed || (jumpTimer > 0 && Time.time < jumpTimer + jumpGracePeriod)))
@@ -82,6 +88,8 @@ public class Player : MonoBehaviour
                 releasedJump = true;
             }
         }
+
+        ChangeColour();
     }
 
     private void FixedUpdate()
@@ -121,6 +129,22 @@ public class Player : MonoBehaviour
         Debug.DrawRay(boxCollider2D.bounds.center, (boxCollider2D.bounds.size * Vector2.down), Color.red);
 
         return raycastHit2D.collider != null;
+    }
+
+    private void ChangeColour()
+    {
+        if (Input.GetKeyDown(KeyCode.I)) // RED
+        {
+            spriteRenderer.color = Color.red;
+        }
+        else if (Input.GetKeyDown(KeyCode.O)) // BLUE
+        {
+            spriteRenderer.color = Color.blue;
+        }
+        else if (Input.GetKeyDown(KeyCode.P)) //YELLOW
+        {
+            spriteRenderer.color = Color.yellow;
+        }
     }
 
     public float GetDistance()

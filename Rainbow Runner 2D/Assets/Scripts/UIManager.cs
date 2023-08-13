@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour
             scoreText.text = score.ToString("0");
         }     
         else if (GameManager.Instance.GetIsGameOver())
-        {
+        {           
             finalScoreText.text = score.ToString("0");
         }
     }

@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] GameObject gameOverPanel;
     private bool isGameOver = false;
+    [SerializeField] GameObject inGameScore;
+
+    private bool startGame = false;
 
     private void Awake()
     {
@@ -41,21 +44,27 @@ public class GameManager : MonoBehaviour
         isGameOver = false;
     }
 
-    // TODO
-    // GAME OVER LOGIC - Check by if player.y <= some y value
-    // --> Triggered if player falls or collides with obstacle
-    // --> Can destory the player, and if player == null, show the game over panel
-
     // Update is called once per frame
     void Update()
     {
         GameOver();
+
+        if (!startGame)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                startGame = true;
+            }
+        }
     }
 
     private void LateUpdate()
     {
-        // Move the camera in the x direction
-        cameraTransform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0) * speedModifier;
+        if (startGame)
+        {
+            // Move the camera in the x direction
+            cameraTransform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0) * speedModifier;
+        }       
     }  
 
     public float GetCameraSpeed()
@@ -75,10 +84,6 @@ public class GameManager : MonoBehaviour
 
     public void Restart()
     {
-        // Reload Scene
-        // Make sue camera speed is back at 15
-        // GameOver panel is false
-        // scores are 0
         SceneManager.LoadScene(0);
     }
 
@@ -89,11 +94,17 @@ public class GameManager : MonoBehaviour
             gameOverPanel.SetActive(true);
             cameraSpeed = 0;
             isGameOver = true;
+            inGameScore.SetActive(false);
         }
     }
 
     public bool GetIsGameOver()
     {
         return isGameOver;
+    }
+
+    public bool GetStartGame()
+    {
+        return startGame;
     }
 }
