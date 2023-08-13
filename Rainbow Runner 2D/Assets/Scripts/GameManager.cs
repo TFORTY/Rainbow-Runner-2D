@@ -40,8 +40,8 @@ public class GameManager : MonoBehaviour
     }
 
     // TODO
-    // GAME OVER LOGIC
-    // --> Trigger on bottom or when they collide with obstacle
+    // GAME OVER LOGIC - Check by if player.y <= some y value
+    // --> Triggered if player falls or collides with obstacle
 
     // Update is called once per frame
     void Update()
