@@ -841,8 +841,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelPart_Start: {fileID: 560037626}
-  levelPart_1: {fileID: 4310255004445192936, guid: 95eb61894c6b84042bf91a8f023c8e60, type: 3}
-  player: {fileID: 1405307330}
+  levelPartList:
+  - {fileID: 4310255004445192936, guid: 95eb61894c6b84042bf91a8f023c8e60, type: 3}
+  - {fileID: 732222902747367651, guid: 724a0b6234755cc42ac51817acf2cea3, type: 3}
+  startingSpawnLevelParts: 5
 --- !u!4 &471093593
 Transform:
   m_ObjectHideFlags: 0
