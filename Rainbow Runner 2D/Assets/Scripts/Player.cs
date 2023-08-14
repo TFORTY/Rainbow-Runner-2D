@@ -131,20 +131,25 @@ public class Player : MonoBehaviour
         return raycastHit2D.collider != null;
     }
 
+    // PLAY WITH LAYERS TO MATCH PLAYER COLOUR AND PLATFORM COLOUR
+
     private void ChangeColour()
     {
-        if (Input.GetKeyDown(KeyCode.I)) // RED
+        if (!GameManager.Instance.GetIsPaused())
         {
-            spriteRenderer.color = Color.red;
-        }
-        else if (Input.GetKeyDown(KeyCode.O)) // BLUE
-        {
-            spriteRenderer.color = Color.blue;
-        }
-        else if (Input.GetKeyDown(KeyCode.P)) //YELLOW
-        {
-            spriteRenderer.color = Color.yellow;
-        }
+            if (Input.GetKeyDown(KeyCode.I)) // RED
+            {
+                spriteRenderer.color = Color.red;
+            }
+            else if (Input.GetKeyDown(KeyCode.O)) // BLUE
+            {
+                spriteRenderer.color = Color.blue;
+            }
+            else if (Input.GetKeyDown(KeyCode.P)) //YELLOW
+            {
+                spriteRenderer.color = Color.yellow;
+            }
+        }       
     }
 
     public float GetDistance()

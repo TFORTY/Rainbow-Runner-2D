@@ -10,8 +10,6 @@ public class GameManager : MonoBehaviour
     // Animators
     // Obstacle stuff (speed, etc)
     // Powerup stuff
-    // HUD references
-    // Deal with game starting, losing, restarting
     // Audio Sources, Game Music, Game Ambience
 
     public static GameManager Instance { get; private set; }
@@ -26,6 +24,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject inGameScore;
 
     private bool startGame = false;
+    [SerializeField] GameObject startGameTextPrompt;
+
+    [SerializeField] GameObject pausePanel;
+    private bool isPaused = false;
 
     private void Awake()
     {
@@ -42,6 +44,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         isGameOver = false;
+        startGameTextPrompt.SetActive(true);
     }
 
     // Update is called once per frame
@@ -54,8 +57,11 @@ public class GameManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 startGame = true;
+                startGameTextPrompt.SetActive(false);
             }
         }
+
+        Pause();
     }
 
     private void LateUpdate()
@@ -82,9 +88,9 @@ public class GameManager : MonoBehaviour
         speedModifier = newValue;
     }
 
-    public void Restart()
+    public void Restart(string _sceneName)
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(_sceneName);
     }
 
     public void GameOver()
@@ -98,6 +104,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void Pause()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            isPaused = !isPaused;
+        }
+
+        if (isPaused)
+        {
+            pausePanel.SetActive(true);
+            Time.timeScale = 0;
+        }
+        else if (!isPaused)
+        {
+            pausePanel.SetActive(false);
+            Time.timeScale = 1;
+        }
+    }
+
+    public void Resume()
+    {
+        isPaused = false;
+    }
+
     public bool GetIsGameOver()
     {
         return isGameOver;
@@ -106,5 +136,10 @@ public class GameManager : MonoBehaviour
     public bool GetStartGame()
     {
         return startGame;
+    }
+
+    public bool GetIsPaused()
+    {
+        return isPaused;
     }
 }
