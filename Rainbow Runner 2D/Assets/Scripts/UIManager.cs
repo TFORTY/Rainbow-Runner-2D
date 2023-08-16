@@ -15,12 +15,12 @@ public class UIManager : MonoBehaviour
     {
         // SCORE
         // Check is player is not dead, if not, add score
-        if (!GameManager.Instance.GetIsGameOver())
+        if (!GameManager.Instance.IsGameOver)
         {
-            score = Player.Instance.GetDistance();
+            score = Player.Instance.Distance;
             scoreText.text = score.ToString("0");
         }     
-        else if (GameManager.Instance.GetIsGameOver())
+        else if (GameManager.Instance.IsGameOver)
         {           
             finalScoreText.text = score.ToString("0");
         }

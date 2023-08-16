@@ -15,19 +15,24 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [SerializeField] float cameraSpeed;
+    public float CameraSpeed { get { return cameraSpeed; } set { cameraSpeed = value; } }
     [SerializeField] Transform cameraTransform;
     [SerializeField] float speedModifier = 1;
+    public float SpeedModifier { get { return speedModifier; } set { speedModifier = value; } }
     [SerializeField] float deathYPos = -18;
 
     [SerializeField] GameObject gameOverPanel;
     private bool isGameOver = false;
+    public bool IsGameOver { get { return isGameOver; } set { isGameOver = value; } }
     [SerializeField] GameObject inGameScore;
 
     private bool startGame = false;
+    public bool StartGame { get { return startGame; } set { startGame = value; } }
     [SerializeField] GameObject startGameTextPrompt;
 
     [SerializeField] GameObject pausePanel;
     private bool isPaused = false;
+    public bool IsPaused { get { return isPaused; } set { isPaused = value; } }
 
     private void Awake()
     {
@@ -73,21 +78,6 @@ public class GameManager : MonoBehaviour
         }       
     }  
 
-    public float GetCameraSpeed()
-    {
-        return cameraSpeed;
-    }
-
-    public float GetSpeedModifier()
-    {
-        return speedModifier;
-    }
-
-    public void SetSpeedModifier(float newValue)
-    {
-        speedModifier = newValue;
-    }
-
     public void Restart(string _sceneName)
     {
         SceneManager.LoadScene(_sceneName);
@@ -126,20 +116,5 @@ public class GameManager : MonoBehaviour
     public void Resume()
     {
         isPaused = false;
-    }
-
-    public bool GetIsGameOver()
-    {
-        return isGameOver;
-    }
-
-    public bool GetStartGame()
-    {
-        return startGame;
-    }
-
-    public bool GetIsPaused()
-    {
-        return isPaused;
     }
 }
