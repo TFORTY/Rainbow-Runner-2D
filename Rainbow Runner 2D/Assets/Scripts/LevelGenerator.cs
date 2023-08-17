@@ -19,12 +19,12 @@ public class LevelGenerator : MonoBehaviour
 
     private void Awake()
     {
-        /*lastEndPosition = levelPart_Start.Find("EndPosition").position;
+        lastEndPosition = levelPart_Start.Find("EndPosition").position;
 
         for (int i = 0; i < startingSpawnLevelParts; ++i)
         {
             SpawnLevelPart();
-        }*/
+        }
     }
 
     // Start is called before the first frame update
@@ -36,11 +36,11 @@ public class LevelGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (Vector3.Distance(Player.Instance.transform.position, lastEndPosition) < PLAYER_DISTANCE_SPAWN_LEVEL_PART)
+        if (Vector3.Distance(Player.Instance.transform.position, lastEndPosition) < PLAYER_DISTANCE_SPAWN_LEVEL_PART)
         {
             // Spawn another level part
             SpawnLevelPart();
-        }*/
+        }
     }
 
     private void SpawnLevelPart()

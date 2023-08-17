@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] LayerMask groundLayerMask;
     [SerializeField] LayerMask redLayerMask;
+    [SerializeField] LayerMask blueLayerMask;
+    [SerializeField] LayerMask yellowLayerMask;
 
     private Rigidbody2D rb;
     [SerializeField] float jumpVelocity = 10f;
@@ -32,10 +34,10 @@ public class Player : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private bool isRed;
     private bool isColourRed;
-
-    public bool IsRed { get { return isRed; } set { isRed = value; } }
-    public bool IsColourRed { get { return isColourRed; } set { isColourRed = value; } }
-
+    private bool isBlue;
+    private bool isColourBlue;
+    private bool isYellow;
+    private bool isColourYellow;
 
     private void Awake()
     {
@@ -56,6 +58,10 @@ public class Player : MonoBehaviour
 
         isRed = false;
         isColourRed = false;
+        isBlue = false;
+        isColourBlue = false;
+        isYellow = false;
+        isColourYellow = false;
     }
 
     // Start is called before the first frame update
@@ -105,6 +111,10 @@ public class Player : MonoBehaviour
 
         // Checks if player has collided with RED layer
         isRed = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0f, Vector2.down, 5f, redLayerMask);
+        // Checks if player has collided with BLUE layer
+        isBlue = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0f, Vector2.down, 5f, blueLayerMask);
+        // Checks if player has collided with YELLOW layer
+        isYellow = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0f, Vector2.down, 5f, yellowLayerMask);
     }
 
     private void FixedUpdate()
@@ -152,16 +162,22 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.I)) // RED
             {
                 isColourRed = true;
+                isColourBlue = false;
+                isColourYellow = false;
                 spriteRenderer.color = Color.red;
             }
             else if (Input.GetKeyDown(KeyCode.O)) // BLUE
             {
+                isColourBlue = true;
                 isColourRed = false;
+                isColourYellow = false;
                 spriteRenderer.color = Color.blue;
             }
             else if (Input.GetKeyDown(KeyCode.P)) //YELLOW
             {
+                isColourYellow = true;
                 isColourRed = false;
+                isColourBlue = false;
                 spriteRenderer.color = Color.yellow;
             }
         }       
@@ -173,6 +189,8 @@ public class Player : MonoBehaviour
         // 3 - Player
         // 6 - Platforms
         // 7- Red
+        // 8 - Blue
+        // 9 - Yellow
 
         if (isColourRed && isRed)
         {
@@ -181,6 +199,24 @@ public class Player : MonoBehaviour
         else if (!isColourRed && isRed)
         {
             Physics2D.IgnoreLayerCollision(3, 7, true);
+        }
+       
+        if (isColourBlue && isBlue)
+        {
+            Physics2D.IgnoreLayerCollision(3, 8, false);
+        }
+        else if (!isColourBlue && isBlue)
+        {
+            Physics2D.IgnoreLayerCollision(3, 8, true);
+        }
+
+        if (isColourYellow && isYellow)
+        {
+            Physics2D.IgnoreLayerCollision(3, 9, false);
+        }
+        else if (!isColourYellow && isYellow)
+        {
+            Physics2D.IgnoreLayerCollision(3, 9, true);
         }
     }
 }
