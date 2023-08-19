@@ -686,7 +686,7 @@ MonoBehaviour:
   minX: 0
   maxX: 50
   minY: -4
-  maxY: 7
+  maxY: 3.5
   timeBetweenSpawns: 3
 --- !u!1 &449735779
 GameObject:

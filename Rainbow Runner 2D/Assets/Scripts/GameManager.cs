@@ -41,7 +41,6 @@ public class GameManager : MonoBehaviour
     // Obstacles
     [SerializeField] GameObject obstaclePrefab;
     [SerializeField] GameObject obstacleSpawner;
-    //[SerializeField] GameObject obstacleSpawnerSpawnPoint;
     [SerializeField] GameObject sideBorder;
     [SerializeField] float minX;
     [SerializeField] float maxX;
@@ -71,7 +70,10 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GameOver();
+        if (Player.Instance.transform.position.y <= deathYPos)
+        {
+            GameOver();
+        }
 
         // Makes sure the game has to start before doing anything
         if (!startGame)
@@ -113,14 +115,11 @@ public class GameManager : MonoBehaviour
     }
 
     public void GameOver()
-    {
-        if (Player.Instance.transform.position.y <= deathYPos)
-        {
-            gameOverPanel.SetActive(true);
-            cameraSpeed = 0;
-            isGameOver = true;
-            inGameScore.SetActive(false);
-        }
+    {              
+        gameOverPanel.SetActive(true);
+        cameraSpeed = 0;
+        isGameOver = true;
+        inGameScore.SetActive(false);      
     }
 
     public void Pause()
