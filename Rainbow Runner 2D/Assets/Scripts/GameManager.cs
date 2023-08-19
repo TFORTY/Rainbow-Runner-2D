@@ -14,13 +14,17 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
+    // Camera Stuff
     [SerializeField] float cameraSpeed;
     public float CameraSpeed { get { return cameraSpeed; } set { cameraSpeed = value; } }
     [SerializeField] Transform cameraTransform;
     [SerializeField] float speedModifier = 1;
+
+    // Speed 
     public float SpeedModifier { get { return speedModifier; } set { speedModifier = value; } }
     [SerializeField] float deathYPos = -18;
 
+    // Game Logic
     [SerializeField] GameObject gameOverPanel;
     private bool isGameOver = false;
     public bool IsGameOver { get { return isGameOver; } set { isGameOver = value; } }
@@ -33,6 +37,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject pausePanel;
     private bool isPaused = false;
     public bool IsPaused { get { return isPaused; } set { isPaused = value; } }
+
+    // Obstacles
+    [SerializeField] GameObject obstaclePrefab;
+    [SerializeField] GameObject obstacleSpawner;
+    //[SerializeField] GameObject obstacleSpawnerSpawnPoint;
+    [SerializeField] GameObject sideBorder;
+    [SerializeField] float minX;
+    [SerializeField] float maxX;
+    [SerializeField] float minY;
+    [SerializeField] float maxY;
+    [SerializeField] float timeBetweenSpawns;
+    private float spawnTime;
 
     private void Awake()
     {
@@ -57,16 +73,29 @@ public class GameManager : MonoBehaviour
     {
         GameOver();
 
+        // Makes sure the game has to start before doing anything
         if (!startGame)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 startGame = true;
-                startGameTextPrompt.SetActive(false);
+                startGameTextPrompt.SetActive(false);             
             }
         }
 
-        Pause();
+        if (startGame)
+        {
+            obstacleSpawner.transform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0) * speedModifier;
+            sideBorder.transform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0) * speedModifier;
+
+            if (Time.time > spawnTime)
+            {
+                SpawnObstacle();
+                spawnTime = Time.time + timeBetweenSpawns;
+            }
+        }
+
+        Pause();     
     }
 
     private void LateUpdate()
@@ -116,5 +145,13 @@ public class GameManager : MonoBehaviour
     public void Resume()
     {
         isPaused = false;
+    }
+
+    public void SpawnObstacle()
+    {
+        float x = Random.Range(minX, maxX);
+        float y = Random.Range(minY, maxY);
+
+        Instantiate(obstaclePrefab, obstacleSpawner.transform.position + new Vector3(x, y, 0), obstacleSpawner.transform.rotation);
     }
 }
