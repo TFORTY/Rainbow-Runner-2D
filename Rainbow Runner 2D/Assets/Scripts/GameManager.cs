@@ -14,31 +14,29 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
-    // Camera Stuff
+    [Header("Camera Stuff")]
     [SerializeField] float cameraSpeed;
     public float CameraSpeed { get { return cameraSpeed; } set { cameraSpeed = value; } }
     [SerializeField] Transform cameraTransform;
     [SerializeField] float speedModifier = 1;
 
-    // Speed 
+    // Speed
     public float SpeedModifier { get { return speedModifier; } set { speedModifier = value; } }
-    [SerializeField] float deathYPos = -18;
 
-    // Game Logic
+    [Header("Game Logic")]
     [SerializeField] GameObject gameOverPanel;
     private bool isGameOver = false;
     public bool IsGameOver { get { return isGameOver; } set { isGameOver = value; } }
     [SerializeField] GameObject inGameScore;
-
+    [SerializeField] float deathYPos = -18;
     private bool startGame = false;
     public bool StartGame { get { return startGame; } set { startGame = value; } }
     [SerializeField] GameObject startGameTextPrompt;
-
     [SerializeField] GameObject pausePanel;
     private bool isPaused = false;
     public bool IsPaused { get { return isPaused; } set { isPaused = value; } }
 
-    // Obstacles
+    [Header("Obstacles")]
     [SerializeField] GameObject obstaclePrefab;
     [SerializeField] GameObject obstacleSpawner;
     [SerializeField] GameObject sideBorder;
@@ -48,6 +46,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] float maxY;
     [SerializeField] float timeBetweenSpawns;
     private float spawnTime;
+
+    [Header("Particles")]
+    [SerializeField] GameObject particleSpawner;
 
     private void Awake()
     {
@@ -89,6 +90,7 @@ public class GameManager : MonoBehaviour
         {
             obstacleSpawner.transform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0) * speedModifier;
             sideBorder.transform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0) * speedModifier;
+            particleSpawner.transform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0) * speedModifier;
 
             if (Time.time > spawnTime)
             {
