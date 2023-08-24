@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public bool IsPaused { get { return isPaused; } set { isPaused = value; } }
 
     [Header("Obstacles")]
+    [SerializeField] bool toggleObstacles = false;
     [SerializeField] GameObject obstaclePrefab;
     [SerializeField] GameObject obstacleSpawner;
     [SerializeField] GameObject sideBorder;
@@ -88,15 +89,19 @@ public class GameManager : MonoBehaviour
 
         if (startGame)
         {
-            obstacleSpawner.transform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0) * speedModifier;
-            sideBorder.transform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0) * speedModifier;
-            particleSpawner.transform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0) * speedModifier;
-
-            if (Time.time > spawnTime)
+            if (!toggleObstacles)
             {
-                SpawnObstacle();
-                spawnTime = Time.time + timeBetweenSpawns;
+                obstacleSpawner.transform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0) * speedModifier;
+                sideBorder.transform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0) * speedModifier;
+
+                if (Time.time > spawnTime)
+                {
+                    SpawnObstacle();
+                    spawnTime = Time.time + timeBetweenSpawns;
+                }
             }
+            
+            particleSpawner.transform.position += new Vector3(cameraSpeed * Time.deltaTime, 0, 0) * speedModifier;           
         }
 
         Pause();     
