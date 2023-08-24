@@ -675,6 +675,11 @@ MonoBehaviour:
   cameraSpeed: 15
   cameraTransform: {fileID: 74751038}
   speedModifier: 1
+  speedModifiers:
+  - 1
+  - 1.2
+  - 1.5
+  - 2
   gameOverPanel: {fileID: 1239565806}
   inGameScore: {fileID: 449735779}
   deathYPos: -18
@@ -986,6 +991,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7597b2d287b92964aa74254fccb08cd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testingPlatform: {fileID: 0}
   levelPart_Start: {fileID: 560037626}
   levelPartEasyList:
   - {fileID: 4310255004445192936, guid: 95eb61894c6b84042bf91a8f023c8e60, type: 3}
@@ -997,7 +1003,6 @@ MonoBehaviour:
   - {fileID: 4310255004445192936, guid: 5bcdfa1c8892b3d408b70cde5fc2569e, type: 3}
   levelPartExtremeList:
   - {fileID: 4310255004445192936, guid: 6481570802962e64f9764f7af34423e3, type: 3}
-  startingSpawnLevelParts: 5
 --- !u!4 &471093593
 Transform:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ public class LevelGenerator : MonoBehaviour
 {
     private const float PLAYER_DISTANCE_SPAWN_LEVEL_PART = 200f;
 
+    [SerializeField] private Transform testingPlatform;
     [SerializeField] private Transform levelPart_Start;
     [SerializeField] private List<Transform> levelPartEasyList;
     [SerializeField] private List<Transform> levelPartMediumList;
@@ -15,6 +16,7 @@ public class LevelGenerator : MonoBehaviour
     private Vector3 lastEndPosition;
 
     // CHECK FOR WHEN TO INCREASE DIFFICULTY --> USING A PLATFORM COUNTER
+    // --> For future, might want to use score to determine diffulty as it's distance based
     private int levelPartsSpawned;
 
     private enum Difficuty
@@ -25,8 +27,6 @@ public class LevelGenerator : MonoBehaviour
         Extreme
     }
 
-    [SerializeField] private int startingSpawnLevelParts = 5;
-
     // NOTE:
     // CAN MAKE LEVEL PARTS MULTIPLE PLATFORMS, NOT JUST A SINGULAR ONE IN THE GAME OBJECT
     // Just make sure to add end position to the last platform in the part
@@ -35,9 +35,9 @@ public class LevelGenerator : MonoBehaviour
     {
         lastEndPosition = levelPart_Start.Find("EndPosition").position;
 
-        for (int i = 0; i < startingSpawnLevelParts; ++i)
+        if (testingPlatform != null)
         {
-            SpawnLevelPart();
+            Debug.Log("Using Debug Testing Platform");
         }
     }
 
@@ -65,27 +65,29 @@ public class LevelGenerator : MonoBehaviour
             default:
             case Difficuty.Easy:
                 difficultyLevelPartList = levelPartEasyList;
+                GameManager.Instance.SpeedModifier = GameManager.Instance.SpeedModifierList[0];
                 break;
             case Difficuty.Medium:
                 difficultyLevelPartList = levelPartMediumList;
+                GameManager.Instance.SpeedModifier = GameManager.Instance.SpeedModifierList[1];
                 break;
             case Difficuty.Hard:
                 difficultyLevelPartList = levelPartHardList;
+                GameManager.Instance.SpeedModifier = GameManager.Instance.SpeedModifierList[2];
                 break;
             case Difficuty.Extreme:
                 difficultyLevelPartList = levelPartExtremeList;
+                GameManager.Instance.SpeedModifier = GameManager.Instance.SpeedModifierList[3];
                 break;             
         }
 
         Transform chosenLevelPart = difficultyLevelPartList[Random.Range(0, difficultyLevelPartList.Count)];
 
-        //// Select EASY Level Part
-        //chosenLevelPart = levelPartEasyList[Random.Range(0, levelPartEasyList.Count)]; 
-        //// Select MEDIUM Level Part
-        //if (levelPartsSpawned > 5)
-        //{
-        //    chosenLevelPart = levelPartMediumList[Random.Range(0, levelPartMediumList.Count)];
-        //}
+        // Allows us to test a platform in the game right at the start
+        if (testingPlatform != null)
+        {
+            chosenLevelPart = testingPlatform;
+        }
 
         Transform lastLevelPartTransform = SpawnLevelPart(chosenLevelPart, lastEndPosition);
         lastEndPosition = lastLevelPartTransform.Find("EndPosition").position;
@@ -98,17 +100,18 @@ public class LevelGenerator : MonoBehaviour
         return levelPartTransform;
     }
 
+    // BASE DIFFICULTY OFF OF DISTANCE/SCORE
     private Difficuty GetDifficulty()
     {
-        if (levelPartsSpawned >= 30)
+        if (levelPartsSpawned >= 40)
         {
             return Difficuty.Extreme;
         }
-        if (levelPartsSpawned >= 20)
+        if (levelPartsSpawned >= 30)
         {
             return Difficuty.Hard;
         }
-        if (levelPartsSpawned >= 10)
+        if (levelPartsSpawned >= 20)
         {
             return Difficuty.Medium;
         }

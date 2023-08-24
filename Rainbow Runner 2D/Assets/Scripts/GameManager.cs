@@ -19,9 +19,11 @@ public class GameManager : MonoBehaviour
     public float CameraSpeed { get { return cameraSpeed; } set { cameraSpeed = value; } }
     [SerializeField] Transform cameraTransform;
     [SerializeField] float speedModifier = 1;
+    [SerializeField] List<float> speedModifiers;
 
     // Speed
     public float SpeedModifier { get { return speedModifier; } set { speedModifier = value; } }
+    public List<float> SpeedModifierList { get { return speedModifiers; } }
 
     [Header("Game Logic")]
     [SerializeField] GameObject gameOverPanel;
