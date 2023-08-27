@@ -13,11 +13,9 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private List<Transform> levelPartHardList;
     [SerializeField] private List<Transform> levelPartExtremeList;
 
-    private Vector3 lastEndPosition;
+    [SerializeField] private List<float> difficultyScoreThresholds;
 
-    // CHECK FOR WHEN TO INCREASE DIFFICULTY --> USING A PLATFORM COUNTER
-    // --> For future, might want to use score to determine diffulty as it's distance based
-    private int levelPartsSpawned;
+    private Vector3 lastEndPosition;
 
     private enum Difficuty
     {
@@ -91,7 +89,6 @@ public class LevelGenerator : MonoBehaviour
 
         Transform lastLevelPartTransform = SpawnLevelPart(chosenLevelPart, lastEndPosition);
         lastEndPosition = lastLevelPartTransform.Find("EndPosition").position;
-        levelPartsSpawned++;
     }
 
     private Transform SpawnLevelPart(Transform levelPart, Vector3 spawnPosition)
@@ -103,15 +100,15 @@ public class LevelGenerator : MonoBehaviour
     // BASE DIFFICULTY OFF OF DISTANCE/SCORE
     private Difficuty GetDifficulty()
     {
-        if (levelPartsSpawned >= 40)
+        if (Player.Instance.Distance >= difficultyScoreThresholds[2])
         {
             return Difficuty.Extreme;
         }
-        if (levelPartsSpawned >= 30)
+        if (Player.Instance.Distance >= difficultyScoreThresholds[1] && Player.Instance.Distance < difficultyScoreThresholds[2])
         {
             return Difficuty.Hard;
         }
-        if (levelPartsSpawned >= 20)
+        if (Player.Instance.Distance >= difficultyScoreThresholds[0] && Player.Instance.Distance < difficultyScoreThresholds[1])
         {
             return Difficuty.Medium;
         }

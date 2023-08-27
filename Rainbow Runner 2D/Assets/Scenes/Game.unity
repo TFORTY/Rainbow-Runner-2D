@@ -1003,6 +1003,10 @@ MonoBehaviour:
   - {fileID: 4310255004445192936, guid: 5bcdfa1c8892b3d408b70cde5fc2569e, type: 3}
   levelPartExtremeList:
   - {fileID: 4310255004445192936, guid: 6481570802962e64f9764f7af34423e3, type: 3}
+  difficultyScoreThresholds:
+  - 5000
+  - 10000
+  - 20000
 --- !u!4 &471093593
 Transform:
   m_ObjectHideFlags: 0
