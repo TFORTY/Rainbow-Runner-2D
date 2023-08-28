@@ -4,20 +4,10 @@ using UnityEngine;
 
 public class Powerup : MonoBehaviour
 {
-    // Parent Class of all the Powerups
+    public PowerupEffect powerupEffect;
 
-    protected float duration;
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Destroy(gameObject);
     }
 }

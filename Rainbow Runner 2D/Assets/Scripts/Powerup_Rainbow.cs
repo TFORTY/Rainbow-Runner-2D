@@ -2,16 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Powerup_Rainbow : MonoBehaviour
+public class Powerup_Rainbow : PowerupEffect
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // This powerup will allow to player to jump on any colour platform regardless of their current colour for a short time
 
-    // Update is called once per frame
-    void Update()
+    public override void Apply(GameObject target)
     {
         
     }
