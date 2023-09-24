@@ -17,7 +17,18 @@ public class Obstacle : MonoBehaviour
         }
         else if (collision.tag == "Player")
         {
-            GameManager.Instance.GameOver();
+            if (GameManager.Instance.IsInvinciblePowerup)
+            {
+                // invincible
+                // start timer
+            }
+            else
+            {
+                GameManager.Instance.GameOver();
+            }
+
+           
         }
+        
     }
 }

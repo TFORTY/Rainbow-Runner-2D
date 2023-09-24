@@ -53,6 +53,9 @@ public class GameManager : MonoBehaviour
     [Header("Particles")]
     [SerializeField] GameObject particleSpawner;
 
+    private bool isInvincible = false;
+    public bool IsInvinciblePowerup { get { return isInvincible; } set { isInvincible = value; } }
+
     private void Awake()
     {
         if (Instance != null)
@@ -107,6 +110,19 @@ public class GameManager : MonoBehaviour
         }
 
         Pause();     
+
+        // Test for Rainbow Powerup
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+
+        }
+
+        // Test for Invicibility Powerup
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            isInvincible = !isInvincible;
+            Debug.Log("INVINCIBLE");
+        }
     }
 
     private void LateUpdate()
