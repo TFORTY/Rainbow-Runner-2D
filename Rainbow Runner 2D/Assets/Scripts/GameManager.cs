@@ -56,6 +56,9 @@ public class GameManager : MonoBehaviour
     private bool isInvincible = false;
     public bool IsInvinciblePowerup { get { return isInvincible; } set { isInvincible = value; } }
 
+    private bool isRainbow = false;
+    public bool IsRainbowPowerup { get { return isRainbow; } set { isRainbow = value; } }
+
     private void Awake()
     {
         if (Instance != null)
@@ -114,7 +117,8 @@ public class GameManager : MonoBehaviour
         // Test for Rainbow Powerup
         if (Input.GetKeyDown(KeyCode.J))
         {
-
+            isRainbow = !isRainbow;
+            Debug.Log("RAINBOW");
         }
 
         // Test for Invicibility Powerup

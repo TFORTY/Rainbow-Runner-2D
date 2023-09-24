@@ -25,9 +25,7 @@ public class Obstacle : MonoBehaviour
             else
             {
                 GameManager.Instance.GameOver();
-            }
-
-           
+            }          
         }
         
     }

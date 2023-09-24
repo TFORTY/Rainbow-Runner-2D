@@ -115,6 +115,13 @@ public class Player : MonoBehaviour
         isBlue = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0f, Vector2.down, 5f, blueLayerMask);
         // Checks if player has collided with YELLOW layer
         isYellow = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0f, Vector2.down, 5f, yellowLayerMask);
+
+        if (GameManager.Instance.IsRainbowPowerup)
+        {
+            Physics2D.IgnoreLayerCollision(3, 7, false);
+            Physics2D.IgnoreLayerCollision(3, 8, false);
+            Physics2D.IgnoreLayerCollision(3, 9, false);
+        }
     }
 
     private void FixedUpdate()
@@ -217,6 +224,6 @@ public class Player : MonoBehaviour
         else if (!isColourYellow && isYellow)
         {
             Physics2D.IgnoreLayerCollision(3, 9, true);
-        }
+        }       
     }
 }
